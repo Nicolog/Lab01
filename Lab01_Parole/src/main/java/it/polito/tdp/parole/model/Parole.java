@@ -1,24 +1,56 @@
 package it.polito.tdp.parole.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Parole {
+	
+	private List<String> parole;
 		
 	public Parole() {
-		//TODO
+		parole = new ArrayList<String>();
 	}
 	
 	public void addParola(String p) {
-		//TODO
+		if(!p.contains(" ")) {
+			parole.add(p);
+			Collections.sort(parole, new ComparatoreAlfabetico());
+		}
+		else 
+			throw new IllegalArgumentException("Digita una sola parola");
 	}
 	
 	public List<String> getElenco() {
-		//TODO
-		return null;
+		return parole;
 	}
 	
 	public void reset() {
-		// TODO
+		parole.clear();
+	}
+	
+	public void cancella(String s) {
+		
+		for(String ss : parole)
+			if(s.equals(ss)) {
+				parole.remove(ss);
+				return;
+			}
+		
+		throw new IllegalArgumentException("Parola non trovata");
 	}
 
+	@Override
+	public String toString() {
+		String s="";
+		for(String ss : parole)
+			s+="\n"+ss;
+		
+		if(s!="")
+			s=s.substring(1);
+		
+		return s;
+	}
+
+	
 }

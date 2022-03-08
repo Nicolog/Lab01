@@ -1,6 +1,7 @@
 package it.polito.tdp.parole;
 
 import it.polito.tdp.parole.model.Parole;
+//import it.polito.tdp.parole.model.Parole2;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -25,23 +26,66 @@ public class FXMLController {
 
     @FXML
     private Button btnInserisci;
+    
+    @FXML
+    private Button btnCancella;
 
     @FXML
     private TextArea txtResult;
+    
+    @FXML
+    private TextArea txtTime;
 
     @FXML
     private Button btnReset;
 
     @FXML
     void doInsert(ActionEvent event) {
-    	// TODO
+    	
+    	long startTime = System.nanoTime();
+    	try {
+    	elenco.addParola(txtParola.getText());
+    	} catch (IllegalArgumentException e) {
+    		txtResult.setText("Digita una parola");
+    		return;
+    	}
+    	txtResult.setText(elenco.toString());
+    	txtParola.clear();
+    	
+    	long elapsedNanos = System.nanoTime() - startTime;
+    	
+    	txtTime.setText(txtTime.getText()+" "+elapsedNanos);
     }
 
     @FXML
     void doReset(ActionEvent event) {
-    	// TODO
+    	long startTime = System.nanoTime();
+    	txtResult.clear();
+    	elenco.reset();
+    	txtTime.clear();
+    	
+    	long elapsedNanos = System.nanoTime() - startTime;
+    	
+    	txtTime.setText(txtTime.getText()+" "+elapsedNanos);
     }
 
+    @FXML
+    void doCancella(ActionEvent event) {
+    	long startTime = System.nanoTime();
+    	try {
+    	elenco.cancella(txtParola.getText());
+    	} catch (IllegalArgumentException e) {
+    		txtResult.setText("Parola non trovata");
+    		return;
+    	}
+    	txtResult.setText(elenco.toString());
+    	txtParola.clear();
+    	
+    	long elapsedNanos = System.nanoTime() - startTime;
+    	
+    	txtTime.setText(txtTime.getText()+" "+elapsedNanos);
+    }
+    
     @FXML
     void initialize() {
         assert txtParola != null : "fx:id=\"txtParola\" was not injected: check your FXML file 'Scene.fxml'.";
